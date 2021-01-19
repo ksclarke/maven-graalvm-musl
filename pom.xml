@@ -79,7 +79,7 @@
           <argLine>${jacoco.agent.arg}</argLine>
         </configuration>
       </plugin>
-
+<!--
       <plugin>
         <groupId>org.graalvm.nativeimage</groupId>
         <artifactId>native-image-maven-plugin</artifactId>
@@ -96,14 +96,14 @@
           <imageName>test</imageName>
           <mainClass>Test</mainClass>
           <buildArgs>
-            <buildArg>--static</buildArg>
-            <buildArg>--libc=musl</buildArg>
+            <buildArg>-\-static</buildArg>
+            <buildArg>-\-libc=musl</buildArg>
             <buildArg>-H:+ReportExceptionStackTraces</buildArg>
             <buildArg>-H:+PrintClassInitialization</buildArg>
           </buildArgs>
         </configuration>
       </plugin>
-
+-->
       <!-- Disable standard deploy; we publish a Docker image, not Jar file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
