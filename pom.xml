@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>maven-graalvm-musl</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${revision}</version>
 
   <name>A Dockerized Maven builder that compiles binaries for Alpine with GraalVM</name>
 
