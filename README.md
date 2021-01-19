@@ -1,2 +1,3 @@
 # maven-graalvm-musl
-A Dockerized Maven builder that uses GraalVM to compile a Java app to run natively on an Alpine container
+
+This project builds a Docker image that's intended to be used as the source for the first phase of a multistage build.
