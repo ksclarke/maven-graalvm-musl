@@ -28,6 +28,8 @@ jobs:
       - name: Set autorelease config
         if: env.AUTORELEASE_ARTIFACT == null
         run: echo "AUTORELEASE_ARTIFACT=false" >> $GITHUB_ENV
+      - name: debug-gpg
+        run: gpg --list-secret-keys
       - name: Release with Maven
         uses: samuelmeuli/action-maven-publish@v1.4.0
         with:
