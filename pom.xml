@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>maven-graalvm-musl</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${revision}</version>
 
   <name>A Dockerized Maven builder that compiles binaries for Alpine with GraalVM</name>
 
@@ -79,7 +79,7 @@
           <argLine>${jacoco.agent.arg}</argLine>
         </configuration>
       </plugin>
-
+<!--
       <plugin>
         <groupId>org.graalvm.nativeimage</groupId>
         <artifactId>native-image-maven-plugin</artifactId>
@@ -96,14 +96,14 @@
           <imageName>test</imageName>
           <mainClass>Test</mainClass>
           <buildArgs>
-            <buildArg>--static</buildArg>
-            <buildArg>--libc=musl</buildArg>
+            <buildArg>-\-static</buildArg>
+            <buildArg>-\-libc=musl</buildArg>
             <buildArg>-H:+ReportExceptionStackTraces</buildArg>
             <buildArg>-H:+PrintClassInitialization</buildArg>
           </buildArgs>
         </configuration>
       </plugin>
-
+-->
       <!-- Disable standard deploy; we publish a Docker image, not Jar file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -176,7 +176,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>6.3.0</version>
+    <version>6.4.1</version>
   </parent>
 
 </project>

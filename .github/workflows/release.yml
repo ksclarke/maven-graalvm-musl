@@ -29,7 +29,7 @@ jobs:
         if: env.AUTORELEASE_ARTIFACT == null
         run: echo "AUTORELEASE_ARTIFACT=false" >> $GITHUB_ENV
       - name: Release with Maven
-        uses: samuelmeuli/action-maven-publish@v1
+        uses: samuelmeuli/action-maven-publish@v1.4.0
         with:
           gpg_private_key: ${{ secrets.BUILD_KEY }}
           gpg_passphrase: ${{ secrets.BUILD_PASSPHRASE }}
@@ -39,3 +39,6 @@ jobs:
           maven_args: >
             -Drevision=${{ github.event.release.tag_name }} -Dautorelease.artifact=${{ env.AUTORELEASE_ARTIFACT }} -ntp
             -Dorg.slf4j.simpleLogger.log.net.sourceforge.pmd=error
+            -Ddocker.registry.username=${{ secrets.DOCKER_USERNAME }}
+            -Ddocker.registry.account=${{ secrets.DOCKER_REGISTRY_ACCOUNT}}
+            -Ddocker.registry.password=${{ secrets.DOCKER_PASSWORD }}
