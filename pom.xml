@@ -75,35 +75,14 @@
         <configuration>
           <forkCount>1</forkCount>
           <reuseForks>false</reuseForks>
-          <skipTests>${skipBuild}</skipTests>
           <argLine>${jacoco.agent.arg}</argLine>
         </configuration>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.graalvm.nativeimage</groupId>
-        <artifactId>native-image-maven-plugin</artifactId>
-        <version>${graalvm.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>native-image</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <imageName>test</imageName>
-          <mainClass>Test</mainClass>
-          <buildArgs>
-            <buildArg>-\-static</buildArg>
-            <buildArg>-\-libc=musl</buildArg>
-            <buildArg>-H:+ReportExceptionStackTraces</buildArg>
-            <buildArg>-H:+PrintClassInitialization</buildArg>
-          </buildArgs>
-        </configuration>
-      </plugin>
--->
+      <!-- <plugin> <groupId>org.graalvm.nativeimage</groupId> <artifactId>native-image-maven-plugin</artifactId> <version>${graalvm.version}</version> 
+        <executions> <execution> <goals> <goal>native-image</goal> </goals> <phase>pre-integration-test</phase> </execution> </executions> 
+        <configuration> <imageName>test</imageName> <mainClass>Test</mainClass> <buildArgs> <buildArg>-\-static</buildArg> <buildArg>-\-libc=musl</buildArg> 
+        <buildArg>-H:+ReportExceptionStackTraces</buildArg> <buildArg>-H:+PrintClassInitialization</buildArg> </buildArgs> </configuration> 
+        </plugin> -->
       <!-- Disable standard deploy; we publish a Docker image, not Jar file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -176,7 +155,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>6.4.1</version>
+    <version>6.5.1</version>
   </parent>
 
 </project>
