@@ -9,17 +9,15 @@
   <name>A Dockerized Maven builder that compiles binaries for Alpine with GraalVM</name>
 
   <properties>
-    <graalvm.version>20.3.0</graalvm.version>
-    <graalvm.jdk.version>java11</graalvm.jdk.version>
-    <alpine.version>3.12.3</alpine.version>
+    <graalvm.version>java11-21.0.0</graalvm.version>
     <maven.version>3.6.3</maven.version>
     <maven.checksum>c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0</maven.checksum>
     <zlib.version>1.2.11</zlib.version>
     <zlib.checksum>c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1</zlib.checksum>
     <musl.version>1.2.2</musl.version>
-    <musl.signature>placeholder</musl.signature>
-    <libstdc.version>4.8.5</libstdc.version>
+    <libstdc.version>8</libstdc.version>
     <upx.version>3.96</upx.version>
+    <xz.version>5.2.4-3</xz.version>
 
     <!-- Plugin versions -->
     <deploy.plugin.version>3.0.0-M1</deploy.plugin.version>
@@ -75,35 +73,14 @@
         <configuration>
           <forkCount>1</forkCount>
           <reuseForks>false</reuseForks>
-          <skipTests>${skipBuild}</skipTests>
           <argLine>${jacoco.agent.arg}</argLine>
         </configuration>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.graalvm.nativeimage</groupId>
-        <artifactId>native-image-maven-plugin</artifactId>
-        <version>${graalvm.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>native-image</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <imageName>test</imageName>
-          <mainClass>Test</mainClass>
-          <buildArgs>
-            <buildArg>-\-static</buildArg>
-            <buildArg>-\-libc=musl</buildArg>
-            <buildArg>-H:+ReportExceptionStackTraces</buildArg>
-            <buildArg>-H:+PrintClassInitialization</buildArg>
-          </buildArgs>
-        </configuration>
-      </plugin>
--->
+      <!-- <plugin> <groupId>org.graalvm.nativeimage</groupId> <artifactId>native-image-maven-plugin</artifactId> <version>${graalvm.version}</version> 
+        <executions> <execution> <goals> <goal>native-image</goal> </goals> <phase>pre-integration-test</phase> </execution> </executions> 
+        <configuration> <imageName>test</imageName> <mainClass>Test</mainClass> <buildArgs> <buildArg>-\-static</buildArg> <buildArg>-\-libc=musl</buildArg> 
+        <buildArg>-H:+ReportExceptionStackTraces</buildArg> <buildArg>-H:+PrintClassInitialization</buildArg> </buildArgs> </configuration> 
+        </plugin> -->
       <!-- Disable standard deploy; we publish a Docker image, not Jar file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -127,19 +104,16 @@
               <name>${docker.registry.account}${project.artifactId}:%l</name>
               <build>
                 <args>
-                  <ALPINE_TAG>${alpine.version}</ALPINE_TAG>
-                  <PROGRAM_NAME>bootstrap</PROGRAM_NAME>
-                  <PROJECT_NAME>${project.artifactId}</PROJECT_NAME>
-                  <GRAALVM_TAG>${graalvm.version}-${graalvm.jdk.version}</GRAALVM_TAG>
-                  <GRAALVM_HOME>/opt/graalvm-ce-${graalvm.jdk.version}-${graalvm.version}</GRAALVM_HOME>
+                  <GRAALVM_TAG>${graalvm.version}</GRAALVM_TAG>
+                  <GRAALVM_HOME>/opt/graalvm-ce-${graalvm.version}</GRAALVM_HOME>
                   <MAVEN_CHECKSUM>${maven.checksum}</MAVEN_CHECKSUM>
                   <MAVEN_VERSION>${maven.version}</MAVEN_VERSION>
                   <ZLIB_VERSION>${zlib.version}</ZLIB_VERSION>
                   <ZLIB_CHECKSUM>${zlib.checksum}</ZLIB_CHECKSUM>
                   <MUSL_VERSION>${musl.version}</MUSL_VERSION>
-                  <MUSL_SIGNATURE>${musl.signature}</MUSL_SIGNATURE>
                   <LIBSTDC_VERSION>${libstdc.version}</LIBSTDC_VERSION>
                   <UPX_VERSION>${upx.version}</UPX_VERSION>
+                  <XZ_VERSION>${xz.version}</XZ_VERSION>
                 </args>
                 <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
                 <assembly>
@@ -148,10 +122,6 @@
               </build>
             </image>
           </images>
-          <authConfig>
-            <username>${docker.registry.username}</username>
-            <password>${docker.registry.password}</password>
-          </authConfig>
         </configuration>
         <executions>
           <execution>
@@ -176,7 +146,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>6.4.1</version>
+    <version>6.5.2</version>
   </parent>
 
 </project>
