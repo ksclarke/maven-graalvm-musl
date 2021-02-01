@@ -146,7 +146,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>6.5.2</version>
+    <version>6.6.3</version>
   </parent>
 
 </project>
