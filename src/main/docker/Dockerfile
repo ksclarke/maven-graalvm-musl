@@ -6,8 +6,7 @@
 ARG GRAALVM_TAG
 
 # Set up a build environment to compile the application
-# FROM ghcr.io/graalvm/graalvm-ce:${GRAALVM_TAG} AS builder
-FROM ghcr.io/graalvm/graalvm-ce:latest AS builder
+FROM ghcr.io/graalvm/graalvm-ce:${GRAALVM_TAG} AS builder
 
 ARG GRAALVM_HOME
 ARG ZLIB_VERSION
