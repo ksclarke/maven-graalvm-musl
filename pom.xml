@@ -9,7 +9,7 @@
   <name>A Dockerized Maven builder that compiles binaries for Alpine with GraalVM</name>
 
   <properties>
-    <graalvm.version>java11-21.0.0</graalvm.version>
+    <graalvm.version>java11-21.1.0</graalvm.version>
     <maven.version>3.6.3</maven.version>
     <maven.checksum>c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0</maven.checksum>
     <zlib.version>1.2.11</zlib.version>
@@ -21,7 +21,7 @@
 
     <!-- Plugin versions -->
     <deploy.plugin.version>3.0.0-M1</deploy.plugin.version>
-    <docker.plugin.version>0.34.1</docker.plugin.version>
+    <docker.plugin.version>0.36.0</docker.plugin.version>
 
     <!-- Maven build properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -146,7 +146,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>6.5.2</version>
+    <version>6.9.2</version>
   </parent>
 
 </project>
