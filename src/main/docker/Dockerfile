@@ -87,3 +87,6 @@ RUN cp ${GRAALVM_HOME}/lib/security/cacerts /etc/default/cacerts
 # Print out a little information about how this image is intended to be used
 ENTRYPOINT ["echo", "This image is intended to be used as the Maven builder in a multistage Docker build\n  "]
 CMD ["For more details, consult https://github.com/ksclarke/maven-graalvm-musl"]
+
+# An entrypoint for debugging
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
