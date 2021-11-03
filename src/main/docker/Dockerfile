@@ -8,7 +8,6 @@ ARG GRAALVM_TAG
 # Set up a build environment to compile the application
 FROM ghcr.io/graalvm/graalvm-ce:${GRAALVM_TAG} AS builder
 
-ARG GRAALVM_HOME
 ARG ZLIB_VERSION
 ARG MUSL_VERSION
 ARG MAVEN_VERSION
@@ -35,7 +34,7 @@ RUN MAVEN_BASE_URL="https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/bin
     && rm -f $MAVEN_DOWNLOAD
 
 # Install GraalVM's native-image
-RUN ${GRAALVM_HOME}/bin/gu install native-image
+RUN gu install native-image
 
 # Create a location for our static libs
 ARG STATIC_LIBS="/staticlibs"
@@ -82,7 +81,7 @@ RUN UPX_DOWNLOAD="/tmp/upx.tar.xz" \
     && rm -f $UPX_DOWNLOAD
 
 # Put GraalVM's cacerts in a predictable place so they can be copied
-RUN cp ${GRAALVM_HOME}/lib/security/cacerts /etc/default/cacerts
+RUN cp /etc/pki/java/cacerts /etc/default/cacerts
 
 # Print out a little information about how this image is intended to be used
 ENTRYPOINT ["echo", "This image is intended to be used as the Maven builder in a multistage Docker build\n  "]

@@ -9,9 +9,9 @@
   <name>A Dockerized Maven builder that compiles binaries for Alpine with GraalVM</name>
 
   <properties>
-    <graalvm.version>java11-21.2.0</graalvm.version>
-    <maven.version>3.6.3</maven.version>
-    <maven.checksum>c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0</maven.checksum>
+    <graalvm.version>java17-21.3</graalvm.version>
+    <maven.version>3.8.3</maven.version>
+    <maven.checksum>1c12a5df43421795054874fd54bb8b37d242949133b5bf6052a063a13a93f13a20e6e9dae2b3d85b9c7034ec977bbc2b6e7f66832182b9c863711d78bfe60faa</maven.checksum>
     <zlib.version>1.2.11</zlib.version>
     <zlib.checksum>c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1</zlib.checksum>
     <musl.version>1.2.2</musl.version>
@@ -20,7 +20,7 @@
     <xz.version>5.2.4-3</xz.version>
 
     <!-- Plugin versions -->
-    <deploy.plugin.version>3.0.0-M1</deploy.plugin.version>
+    <deploy.plugin.version>2.8.2</deploy.plugin.version>
     <docker.plugin.version>0.36.0</docker.plugin.version>
 
     <!-- Maven build properties -->
@@ -76,6 +76,7 @@
           <argLine>${jacoco.agent.arg}</argLine>
         </configuration>
       </plugin>
+
       <!-- Disable standard deploy; we publish a Docker image, not Jar file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -100,7 +101,6 @@
               <build>
                 <args>
                   <GRAALVM_TAG>${graalvm.version}</GRAALVM_TAG>
-                  <GRAALVM_HOME>/opt/graalvm-ce-${graalvm.version}</GRAALVM_HOME>
                   <MAVEN_CHECKSUM>${maven.checksum}</MAVEN_CHECKSUM>
                   <MAVEN_VERSION>${maven.version}</MAVEN_VERSION>
                   <ZLIB_VERSION>${zlib.version}</ZLIB_VERSION>
@@ -141,7 +141,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>6.9.2</version>
+    <version>7.1.2</version>
   </parent>
 
 </project>
