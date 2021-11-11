@@ -19,6 +19,9 @@
     <upx.version>3.96</upx.version>
     <xz.version>5.2.4-3</xz.version>
 
+    <!-- Test dependencies -->
+    <testcontainers.version>1.16.2</testcontainers.version>
+
     <!-- Plugin versions -->
     <deploy.plugin.version>2.8.2</deploy.plugin.version>
     <docker.plugin.version>0.36.0</docker.plugin.version>
@@ -40,15 +43,27 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <!-- Assists with the processing of project tool configurations -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
       </plugin>
 
-      <!-- Maven dependency helps freelib-resources copy files into the project -->
+      <!-- Checks dependencies for various issues -->
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -62,6 +77,9 @@
                 <ignoredDependency>org.slf4j:slf4j-simple:jar</ignoredDependency>
                 <ignoredDependency>org.jboss.forge.roaster:roaster-jdt:jar</ignoredDependency>
               </ignoredDependencies>
+              <ignoredUnusedDeclaredDependencies>
+                <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
+              </ignoredUnusedDeclaredDependencies>
             </configuration>
           </execution>
         </executions>
@@ -69,10 +87,8 @@
 
       <!-- Run tests on our generated image -->
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
+        <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
-          <forkCount>1</forkCount>
-          <reuseForks>false</reuseForks>
           <argLine>${jacoco.agent.arg}</argLine>
         </configuration>
       </plugin>
@@ -94,8 +110,8 @@
         <version>${docker.plugin.version}</version>
         <configuration>
           <verbose>true</verbose>
-          <images>
-            <image>
+          <imagesMap>
+            <maven-graalvm-musl>
               <!-- Registry account, if supplied, must end in a slash (e.g. "account/") -->
               <name>${docker.registry.account}${project.artifactId}:%l</name>
               <build>
@@ -113,19 +129,24 @@
                 <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
                 <assembly>
                   <descriptorRef>project</descriptorRef>
+                  <targetDir>/maven</targetDir>
                 </assembly>
               </build>
-            </image>
-          </images>
+            </maven-graalvm-musl>
+          </imagesMap>
         </configuration>
         <executions>
+
+          <!-- Starts the test container -->
           <execution>
             <id>docker-build</id>
-            <phase>compile</phase>
+            <phase>pre-integration-test</phase>
             <goals>
               <goal>build</goal>
             </goals>
           </execution>
+
+          <!-- Deploys the newly built image -->
           <execution>
             <id>docker-deploy</id>
             <phase>deploy</phase>
@@ -135,13 +156,34 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>net.revelc.code.formatter</groupId>
+        <artifactId>formatter-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
 
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>7.1.2</version>
+    <version>7.1.3</version>
   </parent>
 
 </project>
