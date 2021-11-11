@@ -237,12 +237,17 @@ public class MgmImageFT {
      * @return The name of the container to spin up
      */
     private static String getImageTag() {
+        String account = System.getenv("DOCKER_ACCOUNT");
         String version = System.getenv("IMAGE_VERSION");
+
+        if (account == null || account.trim().length() == 0) {
+            account = "";
+        }
 
         if (version == null || version.contains("SNAPSHOT")) {
             version = "latest";
         }
 
-        return System.getenv("IMAGE_NAME") + ":" + version;
+        return account + System.getenv("IMAGE_NAME") + ":" + version;
     }
 }

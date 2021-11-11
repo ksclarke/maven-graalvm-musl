@@ -25,6 +25,7 @@
     <!-- Plugin versions -->
     <deploy.plugin.version>2.8.2</deploy.plugin.version>
     <docker.plugin.version>0.36.0</docker.plugin.version>
+    <jar.plugin.version>3.2.0</jar.plugin.version>
 
     <!-- Maven build properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,6 +64,16 @@
         <artifactId>maven-resources-plugin</artifactId>
       </plugin>
 
+      <!-- We're building a Docker image, so skip the jar construction -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${jar.plugin.version}</version>
+        <configuration>
+          <skipIfEmpty>true</skipIfEmpty>
+        </configuration>
+      </plugin>
+
       <!-- Checks dependencies for various issues -->
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -93,6 +104,7 @@
           <environmentVariables>
             <IMAGE_NAME>${project.artifactId}</IMAGE_NAME>
             <IMAGE_VERSION>${project.version}</IMAGE_VERSION>
+            <DOCKER_ACCOUNT>${docker.registry.account}</DOCKER_ACCOUNT>
           </environmentVariables>
         </configuration>
       </plugin>
@@ -168,6 +180,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>net.revelc.code.formatter</groupId>
