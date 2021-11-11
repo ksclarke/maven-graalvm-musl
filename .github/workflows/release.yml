@@ -27,12 +27,6 @@ jobs:
         uses: stCarolas/setup-maven@1d56b37995622db66cce1214d81014b09807fb5a # v4
         with:
           maven-version: 3.8.3
-      - name: Set autorelease config
-        if: env.AUTORELEASE_ARTIFACT == null
-        run: echo "AUTORELEASE_ARTIFACT=false" >> $GITHUB_ENV
-      - name: Set Jar deployment config
-        if: env.SKIP_JAR_DEPLOYMENT == null
-        run: echo "SKIP_JAR_DEPLOYMENT=false" >> $GITHUB_ENV
       - name: Optionally, login to Docker repository
         uses: docker/login-action@f3364599c6aa293cdc2b8391b1b56d0c30e45c8a # v1.8.0
         env:
@@ -48,11 +42,9 @@ jobs:
           gpg_passphrase: ${{ secrets.BUILD_PASSPHRASE }}
           nexus_username: ${{ secrets.SONATYPE_USERNAME }}
           nexus_password: ${{ secrets.SONATYPE_PASSWORD }}
-          maven_profiles: release,${{ secrets.BUILD_PROFILES }}
+          maven_profiles: default
           maven_args: >
-            -Drevision=${{ github.event.release.tag_name }} -DautoReleaseAfterClose=${{ env.AUTORELEASE_ARTIFACT }}
-            -ntp -Dorg.slf4j.simpleLogger.log.net.sourceforge.pmd=error ${{ secrets.BUILD_PROPERTIES }}
-            -DskipNexusStagingDeployMojo=${{ env.SKIP_JAR_DEPLOYMENT }}
+            -Drevision=${{ github.event.release.tag_name }} -ntp -Dorg.slf4j.simpleLogger.log.net.sourceforge.pmd=error
             -Ddocker.registry.username=${{ secrets.DOCKER_USERNAME }}
             -Ddocker.registry.account=${{ secrets.DOCKER_REGISTRY_ACCOUNT}}
             -Ddocker.registry.password=${{ secrets.DOCKER_PASSWORD }}
