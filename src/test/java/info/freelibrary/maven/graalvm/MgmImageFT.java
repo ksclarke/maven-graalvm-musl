@@ -20,7 +20,7 @@ public class MgmImageFT {
     /**
      * The name of the image we want to test.
      */
-    public static final DockerImageName DOCKER_IMAGE_NAME = DockerImageName.parse("maven-graalvm-musl:latest");
+    public static final DockerImageName DOCKER_IMAGE_NAME = DockerImageName.parse(getImageTag());
 
     /**
      * An instance of the container that we can run tests against. That container doesn't have a running process so we
@@ -229,5 +229,20 @@ public class MgmImageFT {
      */
     private boolean fileExists(final String aFilePath) throws InterruptedException, IOException {
         return MGM_CONTAINER.execInContainer("ls", aFilePath).getExitCode() == 0;
+    }
+
+    /**
+     * Gets the test image's Docker tag, which varies between snapshot and tagged builds.
+     *
+     * @return The name of the container to spin up
+     */
+    private static String getImageTag() {
+        String version = System.getenv("IMAGE_VERSION");
+
+        if (version == null || version.contains("SNAPSHOT")) {
+            version = "latest";
+        }
+
+        return System.getenv("IMAGE_NAME") + ":" + version;
     }
 }

@@ -90,6 +90,10 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <argLine>${jacoco.agent.arg}</argLine>
+          <environmentVariables>
+            <IMAGE_NAME>${project.artifactId}</IMAGE_NAME>
+            <IMAGE_VERSION>${project.version}</IMAGE_VERSION>
+          </environmentVariables>
         </configuration>
       </plugin>
 
