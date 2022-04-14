@@ -8,24 +8,42 @@
 
   <name>A Dockerized Maven builder that compiles binaries for Alpine with GraalVM</name>
 
+  <licenses>
+    <license>
+      <name>Mozilla Public License 2.0</name>
+      <url>https://opensource.org/licenses/MPL-2.0</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git@github.com:ksclarke/maven-graalvm-musl.git</connection>
+    <developerConnection>scm:git:git@github.com:ksclarke/musl-graalvm-musl.git</developerConnection>
+    <url>git@github.com:ksclarke/musl-graalvm-musl.git</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/ksclarke/maven-graalvm-musl/issues</url>
+  </issueManagement>
+
   <properties>
-    <graalvm.version>java17-21.3</graalvm.version>
-    <maven.version>3.8.3</maven.version>
-    <maven.checksum>1c12a5df43421795054874fd54bb8b37d242949133b5bf6052a063a13a93f13a20e6e9dae2b3d85b9c7034ec977bbc2b6e7f66832182b9c863711d78bfe60faa</maven.checksum>
-    <zlib.version>1.2.11</zlib.version>
-    <zlib.checksum>c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1</zlib.checksum>
-    <musl.version>1.2.2</musl.version>
+    <graalvm.version>22.0.0.2</graalvm.version>
+    <maven.version>3.8.5</maven.version>
+    <maven.checksum>89ab8ece99292476447ef6a6800d9842bbb60787b9b8a45c103aa61d2f205a971d8c3ddfb8b03e514455b4173602bd015e82958c0b3ddc1728a57126f773c743</maven.checksum>
+    <zlib.version>1.2.12</zlib.version>
+    <zlib.checksum>91844808532e5ce316b3c010929493c0244f3d37593afd6de04f71821d5136d9</zlib.checksum>
+    <musl.version>1.2.3</musl.version>
     <libstdc.version>8</libstdc.version>
     <upx.version>3.96</upx.version>
     <xz.version>5.2.4-3</xz.version>
 
     <!-- Test dependencies -->
-    <testcontainers.version>1.16.2</testcontainers.version>
+    <testcontainers.version>1.17.1</testcontainers.version>
 
     <!-- Plugin versions -->
     <deploy.plugin.version>2.8.2</deploy.plugin.version>
-    <docker.plugin.version>0.36.0</docker.plugin.version>
-    <jar.plugin.version>3.2.0</jar.plugin.version>
+    <docker.plugin.version>0.39.1</docker.plugin.version>
+    <jar.plugin.version>3.2.2</jar.plugin.version>
 
     <!-- Maven build properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,7 +84,6 @@
 
       <!-- We're building a Docker image, so skip the jar construction -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>${jar.plugin.version}</version>
         <configuration>
@@ -111,7 +128,6 @@
 
       <!-- Disable standard deploy; we publish a Docker image, not Jar file -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>${deploy.plugin.version}</version>
         <configuration>
@@ -174,11 +190,9 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
         <configuration>
           <skip>true</skip>
@@ -189,11 +203,9 @@
         <artifactId>formatter-maven-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
     </plugins>
@@ -202,7 +214,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>7.1.3</version>
+    <version>7.2.2</version>
   </parent>
 
 </project>
