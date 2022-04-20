@@ -32,7 +32,7 @@ public class MgmImageFT {
     /**
      * The expected MUSL GCC executable.
      */
-    private static final String MUSL_GCC = "musl-gcc";
+    private static final String MUSL_GCC = "x86_64-linux-musl-gcc";
 
     /**
      * The expected location of the Maven directory.
@@ -78,7 +78,7 @@ public class MgmImageFT {
         final ExecResult result = which(MUSL_GCC);
 
         assertEquals(0, result.getExitCode());
-        assertEquals("/mgm_tools/bin/musl-gcc", result.getStdout().trim());
+        assertEquals("/mgm_tools/bin/x86_64-linux-musl-gcc", result.getStdout().trim());
     }
 
     /**

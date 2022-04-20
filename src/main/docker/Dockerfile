@@ -31,8 +31,7 @@ RUN MAVEN_BASE_URL="https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/bin
     && curl -s -o ${MAVEN_DOWNLOAD} ${MAVEN_BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     # Check the download's SHA512 (the double space in the `echo` is necessary)
     && echo "${MAVEN_CHECKSUM}  ${MAVEN_DOWNLOAD}" | sha512sum -c - \
-    && tar -xzf ${MAVEN_DOWNLOAD} -C ${MAVEN_HOME} --strip-components=1 \
-    && rm -f $MAVEN_DOWNLOAD
+    && tar -xzf ${MAVEN_DOWNLOAD} -C ${MAVEN_HOME} --strip-components=1
 
 # Install GraalVM's native-image
 RUN gu install native-image
@@ -44,11 +43,11 @@ WORKDIR ${MGM_TOOLS}
 # Install musl-gcc to compile statically against
 WORKDIR /opt/musl
 RUN MUSL_DOWNLOAD="/tmp/musl.tar.gz" \
-    && curl -s -L -o $MUSL_DOWNLOAD https://musl.libc.org/releases/musl-${MUSL_VERSION}.tar.gz \
-    && tar -xvzf $MUSL_DOWNLOAD --strip-components 1 \
+    && curl -s -L -o ${MUSL_DOWNLOAD} https://musl.libc.org/releases/musl-${MUSL_VERSION}.tar.gz \
+    && tar -xvzf ${MUSL_DOWNLOAD} --strip-components 1 \
     && ./configure --disable-shared --prefix=${MGM_TOOLS} \
     && make install \
-    && rm -rf $MUSL_DOWNLOAD /opt/musl
+    && ln -s ${MGM_TOOLS}/bin/musl-gcc ${MGM_TOOLS}/bin/x86_64-linux-musl-gcc
 
 # Use the container's libstdc++ (it works as well as using Alpine's)
 RUN echo "System's libstdc version: $(ls /usr/lib/gcc/x86_64-redhat-linux/)" \
@@ -56,17 +55,16 @@ RUN echo "System's libstdc version: $(ls /usr/lib/gcc/x86_64-redhat-linux/)" \
 
 # Set the musl-gcc build properties
 ENV PATH="$PATH:${MGM_TOOLS}/bin"
-ENV CC="musl-gcc"
+ENV CC="x86_64-linux-musl-gcc"
 
 # Install zlib to use when statically compiling against musl
 WORKDIR /opt/zlib
 RUN ZLIB_DOWNLOAD="/tmp/zlib.tar.gz" \
-    && curl -s -L -o $ZLIB_DOWNLOAD https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz \
+    && curl -s -L -o ${ZLIB_DOWNLOAD} https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz \
     && echo "${ZLIB_CHECKSUM}  ${ZLIB_DOWNLOAD}" | sha256sum -c - \
-    && tar -xvzf $ZLIB_DOWNLOAD --strip-components 1 \
+    && tar -xvzf ${ZLIB_DOWNLOAD} --strip-components 1 \
     && ./configure --static --prefix=${MGM_TOOLS} \
-    && make install \
-    && rm -rf $ZLIB_DOWNLOAD /opt/zlib
+    && make install
 
 # Install xz to use when unpacking UPX
 RUN XZ_BASE_URL="https://yum.oracle.com/repo/OracleLinux/OL8/3/baseos/base/x86_64/getPackage" \
@@ -76,10 +74,13 @@ RUN XZ_BASE_URL="https://yum.oracle.com/repo/OracleLinux/OL8/3/baseos/base/x86_6
 WORKDIR /opt/upx
 RUN UPX_DOWNLOAD="/tmp/upx.tar.xz" \
     && UPX_BASE_URL="https://github.com/upx/upx/releases/download" \
-    && curl -s -L -o $UPX_DOWNLOAD ${UPX_BASE_URL}/v${UPX_VERSION}/upx-${UPX_VERSION}-amd64_linux.tar.xz \
-    && tar -xvf $UPX_DOWNLOAD --strip-components 1 \
-    && mv upx ${MGM_TOOLS}/bin \
-    && rm -rf $UPX_DOWNLOAD /opt/upx
+    && curl -s -L -o ${UPX_DOWNLOAD} ${UPX_BASE_URL}/v${UPX_VERSION}/upx-${UPX_VERSION}-amd64_linux.tar.xz \
+    && tar -xvf ${UPX_DOWNLOAD} --strip-components 1 \
+    && mv upx ${MGM_TOOLS}/bin
+
+# Clean up build artifacts and set a default working directory
+WORKDIR /
+RUN rm -rf ${UPX_DOWNLOAD} /opt/upx ${ZLIB_DOWNLOAD} /opt/zlib ${MUSL_DOWNLOAD} /opt/musl ${MAVEN_DOWNLOAD}
 
 # Put GraalVM's cacerts in a predictable place so they can be copied
 RUN cp /etc/pki/java/cacerts /etc/default/cacerts
