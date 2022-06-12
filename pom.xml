@@ -175,7 +175,7 @@
           <!-- Starts the test container -->
           <execution>
             <id>docker-build</id>
-            <phase>compile</phase>
+            <phase>pre-integration-test</phase>
             <goals>
               <goal>build</goal>
             </goals>
