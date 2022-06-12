@@ -28,7 +28,6 @@
 
   <properties>
     <graalvm.version>22.1.0</graalvm.version>
-    <jdk.version>java17</jdk.version>
     <maven.version>3.8.6</maven.version>
     <maven.checksum>f790857f3b1f90ae8d16281f902c689e4f136ebe584aba45e4b1fa66c80cba826d3e0e52fdd04ed44b4c66f6d3fe3584a057c26dfcac544a60b301e6d0f91c26</maven.checksum>
     <zlib.version>1.2.12</zlib.version>
@@ -151,7 +150,6 @@
               <build>
                 <args>
                   <GRAALVM_TAG>${graalvm.version}</GRAALVM_TAG>
-                  <GRAALVM_HOME>/opt/graalvm-ce-${jdk.version}-${graalvm.version}</GRAALVM_HOME>
                   <MAVEN_CHECKSUM>${maven.checksum}</MAVEN_CHECKSUM>
                   <MAVEN_VERSION>${maven.version}</MAVEN_VERSION>
                   <ZLIB_VERSION>${zlib.version}</ZLIB_VERSION>
