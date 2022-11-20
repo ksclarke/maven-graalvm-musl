@@ -10,14 +10,11 @@ ARG GRAALVM_TAG
 # Set up a default build environment for our components
 FROM ghcr.io/graalvm/graalvm-ce:${GRAALVM_TAG}
 
-ARG ZLIB_VERSION
 ARG MUSL_VERSION
 ARG MAVEN_VERSION
-ARG ZLIB_CHECKSUM
 ARG MAVEN_CHECKSUM
 ARG LIBSTDC_VERSION
 ARG UPX_VERSION
-ARG XZ_VERSION
 
 # Configure Maven build properties
 ENV M2_HOME=/opt/maven
@@ -57,18 +54,10 @@ RUN echo "System's libstdc version: $(ls /usr/lib/gcc/x86_64-redhat-linux/)" \
 ENV PATH="$PATH:${MGM_TOOLS}/bin"
 ENV CC="x86_64-linux-musl-gcc"
 
-# Install zlib to use when statically compiling against musl
-WORKDIR /opt/zlib
-RUN ZLIB_DOWNLOAD="/tmp/zlib.tar.gz" \
-    && curl -s -L -o ${ZLIB_DOWNLOAD} https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz \
-    && echo "${ZLIB_CHECKSUM}  ${ZLIB_DOWNLOAD}" | sha256sum -c - \
-    && tar -xvzf ${ZLIB_DOWNLOAD} --strip-components 1 \
-    && ./configure --static --prefix=${MGM_TOOLS} \
-    && make install
-
-# Install xz to use when unpacking UPX
-RUN XZ_BASE_URL="https://yum.oracle.com/repo/OracleLinux/OL8/3/baseos/base/x86_64/getPackage" \
-    && rpm -ivh ${XZ_BASE_URL}/xz-${XZ_VERSION}.el8.x86_64.rpm
+# Install xz (for use with UPX) and zlib
+RUN microdnf update -y oraclelinux-release-el8 \
+    && microdnf install xz zlib xmlstarlet \
+    && microdnf clean all
 
 # Install UPX for optional compression of the application
 WORKDIR /opt/upx
@@ -80,7 +69,7 @@ RUN UPX_DOWNLOAD="/tmp/upx.tar.xz" \
 
 # Clean up build artifacts and set a default working directory
 WORKDIR /
-RUN rm -rf ${UPX_DOWNLOAD} /opt/upx ${ZLIB_DOWNLOAD} /opt/zlib ${MUSL_DOWNLOAD} /opt/musl ${MAVEN_DOWNLOAD}
+RUN rm -rf ${UPX_DOWNLOAD} /opt/upx ${MUSL_DOWNLOAD} /opt/musl ${MAVEN_DOWNLOAD}
 
 # Put GraalVM's cacerts in a predictable place so they can be copied
 RUN cp /etc/pki/java/cacerts /etc/default/cacerts

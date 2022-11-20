@@ -110,6 +110,20 @@ public class MgmImageFT {
     }
 
     /**
+     * Tests the xmlstarlet executable.
+     *
+     * @throws InterruptedException If the container test is interrupted
+     * @throws IOException If there is trouble reading from the container
+     */
+    @Test
+    public final void testXmlStarlet() throws InterruptedException, IOException {
+        final ExecResult result = which("xmlstarlet");
+
+        assertEquals(0, result.getExitCode());
+        assertEquals("/usr/bin/xmlstarlet", result.getStdout().trim());
+    }
+
+    /**
      * Tests the presence of the cacerts.
      *
      * @throws InterruptedException If the container test is interrupted
@@ -139,7 +153,7 @@ public class MgmImageFT {
      */
     @Test
     public final void testZlibPresence() throws InterruptedException, IOException {
-        assertTrue(fileExists("/mgm_tools/lib/libz.a"));
+        assertTrue(fileExists("/usr/lib64/libz.a"));
     }
 
     /**

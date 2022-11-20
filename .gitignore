@@ -6,3 +6,4 @@ lib_managed
 
 # Working version of POM file
 .flattened-pom.xml
+/maven-graalvm/
