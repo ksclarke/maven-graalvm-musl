@@ -27,23 +27,20 @@
   </issueManagement>
 
   <properties>
-    <graalvm.version>22.1.0</graalvm.version>
+    <graalvm.version>22.2.0</graalvm.version>
     <maven.version>3.8.6</maven.version>
     <maven.checksum>f790857f3b1f90ae8d16281f902c689e4f136ebe584aba45e4b1fa66c80cba826d3e0e52fdd04ed44b4c66f6d3fe3584a057c26dfcac544a60b301e6d0f91c26</maven.checksum>
-    <zlib.version>1.2.12</zlib.version>
-    <zlib.checksum>91844808532e5ce316b3c010929493c0244f3d37593afd6de04f71821d5136d9</zlib.checksum>
     <musl.version>1.2.3</musl.version>
     <libstdc.version>8</libstdc.version>
     <upx.version>3.96</upx.version>
-    <xz.version>5.2.4-3</xz.version>
 
     <!-- Test dependencies -->
-    <testcontainers.version>1.17.1</testcontainers.version>
+    <testcontainers.version>1.17.6</testcontainers.version>
 
     <!-- Plugin versions -->
-    <deploy.plugin.version>2.8.2</deploy.plugin.version>
-    <docker.plugin.version>0.39.1</docker.plugin.version>
-    <jar.plugin.version>3.2.2</jar.plugin.version>
+    <deploy.plugin.version>3.0.0</deploy.plugin.version>
+    <docker.plugin.version>0.40.2</docker.plugin.version>
+    <jar.plugin.version>3.3.0</jar.plugin.version>
 
     <!-- Maven build properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -151,12 +148,9 @@
                   <GRAALVM_TAG>${graalvm.version}</GRAALVM_TAG>
                   <MAVEN_CHECKSUM>${maven.checksum}</MAVEN_CHECKSUM>
                   <MAVEN_VERSION>${maven.version}</MAVEN_VERSION>
-                  <ZLIB_VERSION>${zlib.version}</ZLIB_VERSION>
-                  <ZLIB_CHECKSUM>${zlib.checksum}</ZLIB_CHECKSUM>
                   <MUSL_VERSION>${musl.version}</MUSL_VERSION>
                   <LIBSTDC_VERSION>${libstdc.version}</LIBSTDC_VERSION>
                   <UPX_VERSION>${upx.version}</UPX_VERSION>
-                  <XZ_VERSION>${xz.version}</XZ_VERSION>
                 </args>
                 <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
                 <assembly>
@@ -214,7 +208,7 @@
   <parent>
     <artifactId>freelib-parent</artifactId>
     <groupId>info.freelibrary</groupId>
-    <version>7.2.3</version>
+    <version>8.0.0</version>
   </parent>
 
 </project>
