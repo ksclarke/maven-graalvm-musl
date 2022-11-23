@@ -15,6 +15,8 @@ ARG MAVEN_VERSION
 ARG MAVEN_CHECKSUM
 ARG LIBSTDC_VERSION
 ARG UPX_VERSION
+ARG CENTOS_VERSION
+ARG XMLSTARLET_VERSION
 
 # Configure Maven build properties
 ENV M2_HOME=/opt/maven
@@ -54,10 +56,18 @@ RUN echo "System's libstdc version: $(ls /usr/lib/gcc/x86_64-redhat-linux/)" \
 ENV PATH="$PATH:${MGM_TOOLS}/bin"
 ENV CC="x86_64-linux-musl-gcc"
 
-# Install xz (for use with UPX) and zlib
-RUN microdnf update -y oraclelinux-release-el8 \
-    && microdnf install xz zlib xmlstarlet \
+# Install xz (for use with UPX) and other utilities
+RUN microdnf update -y "oraclelinux-release-el${CENTOS_VERSION}" \
+    && microdnf install -y xz libxslt jq \
     && microdnf clean all
+
+# Setup static zlib library
+RUN cp /usr/lib64/libz.a ${MGM_TOOLS}/lib/
+
+# Install xmlstarlet
+RUN XMLSTARLET_URL="http://mirror.stream.centos.org/${CENTOS_VERSION}-stream/AppStream/x86_64/os/Packages" \
+    && curl -s "${XMLSTARLET_URL}/xmlstarlet-${XMLSTARLET_VERSION}.x86_64.rpm" > "/tmp/xmlstarlet.rpm" \
+    && rpm -i "/tmp/xmlstarlet.rpm" && rm "/tmp/xmlstarlet.rpm"
 
 # Install UPX for optional compression of the application
 WORKDIR /opt/upx
