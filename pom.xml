@@ -32,7 +32,7 @@
     <maven.checksum>f790857f3b1f90ae8d16281f902c689e4f136ebe584aba45e4b1fa66c80cba826d3e0e52fdd04ed44b4c66f6d3fe3584a057c26dfcac544a60b301e6d0f91c26</maven.checksum>
     <musl.version>1.2.3</musl.version>
     <libstdc.version>11</libstdc.version>
-    <upx.version>4.0.0</upx.version>
+    <upx.version>4.0.1</upx.version>
     <centos.version>9</centos.version>
     <xmlstarlet.version>1.6.1-20.el9</xmlstarlet.version>
 
