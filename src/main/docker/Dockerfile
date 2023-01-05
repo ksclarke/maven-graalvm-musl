@@ -65,7 +65,7 @@ RUN microdnf update -y "oraclelinux-release-el${CENTOS_VERSION}" \
 RUN cp /usr/lib64/libz.a ${MGM_TOOLS}/lib/
 
 # Install xmlstarlet
-RUN XMLSTARLET_URL="http://mirror.stream.centos.org/${CENTOS_VERSION}-stream/AppStream/x86_64/os/Packages" \
+RUN XMLSTARLET_URL="https://mirror.stream.centos.org/${CENTOS_VERSION}-stream/AppStream/x86_64/os/Packages" \
     && curl -s "${XMLSTARLET_URL}/xmlstarlet-${XMLSTARLET_VERSION}.x86_64.rpm" > "/tmp/xmlstarlet.rpm" \
     && rpm -i "/tmp/xmlstarlet.rpm" && rm "/tmp/xmlstarlet.rpm"
 
