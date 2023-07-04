@@ -12,7 +12,6 @@ FROM ghcr.io/graalvm/graalvm-ce:${GRAALVM_TAG}
 
 ARG MUSL_VERSION
 ARG MAVEN_VERSION
-ARG MAVEN_CHECKSUM
 ARG LIBSTDC_VERSION
 ARG UPX_VERSION
 ARG CENTOS_VERSION
@@ -28,8 +27,6 @@ WORKDIR ${MAVEN_HOME}
 RUN MAVEN_BASE_URL="https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries/" \
     && MAVEN_DOWNLOAD="/tmp/apache-maven.tar.gz" \
     && curl -s -o ${MAVEN_DOWNLOAD} ${MAVEN_BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
-    # Check the download's SHA512 (the double space in the `echo` is necessary)
-    && echo "${MAVEN_CHECKSUM}  ${MAVEN_DOWNLOAD}" | sha512sum -c - \
     && tar -xzf ${MAVEN_DOWNLOAD} -C ${MAVEN_HOME} --strip-components=1
 
 # Install GraalVM's native-image

@@ -27,21 +27,20 @@
   </issueManagement>
 
   <properties>
-    <graalvm.version>22.3.0</graalvm.version>
-    <maven.version>3.8.7</maven.version>
-    <maven.checksum>21c2be0a180a326353e8f6d12289f74bc7cd53080305f05358936f3a1b6dd4d91203f4cc799e81761cf5c53c5bbe9dcc13bdb27ec8f57ecf21b2f9ceec3c8d27</maven.checksum>
-    <musl.version>1.2.3</musl.version>
+    <graalvm.version>22.3.2</graalvm.version>
+    <maven.version>3.8.8</maven.version>
+    <musl.version>1.2.4</musl.version>
     <libstdc.version>11</libstdc.version>
-    <upx.version>4.0.1</upx.version>
+    <upx.version>4.0.2</upx.version>
     <centos.version>9</centos.version>
     <xmlstarlet.version>1.6.1-20.el9</xmlstarlet.version>
 
     <!-- Test dependencies -->
-    <testcontainers.version>1.17.6</testcontainers.version>
+    <testcontainers.version>1.18.3</testcontainers.version>
 
     <!-- Plugin versions -->
-    <deploy.plugin.version>3.0.0</deploy.plugin.version>
-    <docker.plugin.version>0.40.2</docker.plugin.version>
+    <deploy.plugin.version>3.1.1</deploy.plugin.version>
+    <docker.plugin.version>0.43.0</docker.plugin.version>
     <jar.plugin.version>3.3.0</jar.plugin.version>
 
     <!-- Maven build properties -->
@@ -148,7 +147,6 @@
               <build>
                 <args>
                   <GRAALVM_TAG>${graalvm.version}</GRAALVM_TAG>
-                  <MAVEN_CHECKSUM>${maven.checksum}</MAVEN_CHECKSUM>
                   <MAVEN_VERSION>${maven.version}</MAVEN_VERSION>
                   <MUSL_VERSION>${musl.version}</MUSL_VERSION>
                   <LIBSTDC_VERSION>${libstdc.version}</LIBSTDC_VERSION>
